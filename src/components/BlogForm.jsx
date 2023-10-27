@@ -1,9 +1,11 @@
 import { useState } from 'react'
+import { useNotification } from '../contexts/NotificationContext'
 
 const BlogForm = ({ createBlog }) => {
   const [title, setTitle] = useState('')
   const [author, setAuthor] = useState('')
   const [url, setUrl] = useState('')
+  const [notification, dispatch] = useNotification()
 
   const addBlog = (e) => {
     e.preventDefault()
@@ -16,6 +18,7 @@ const BlogForm = ({ createBlog }) => {
     setTitle('')
     setAuthor('')
     setUrl('')
+    dispatch({ type: 'SHOW', payload: 'Anecdote was added!' })
   }
   return (
     <div>
