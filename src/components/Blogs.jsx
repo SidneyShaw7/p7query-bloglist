@@ -43,7 +43,6 @@ const Blog = ({ blog }) => {
     deleteBlogMutation.mutate({ id })
   }
 
-  //   const user = useSelector((state) => state.login)
   return (
     <div style={blogStyle}>
       <div>{blog.title}</div>

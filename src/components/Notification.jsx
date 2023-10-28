@@ -15,7 +15,7 @@ const Notification = () => {
     const { message, timeout } = notification
     setTimeout(() => {
       dispatch({ type: 'HIDE' })
-    }, timeout)
+    }, 3000)
 
     return <div style={style}>{message}</div>
   }

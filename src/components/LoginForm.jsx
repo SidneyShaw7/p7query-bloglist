@@ -1,18 +1,40 @@
 import { useState } from 'react'
+import { useAuth } from '../contexts/AuthContext'
+import loginService from '../services/login'
+import blogService from '../services/blogs'
 
-const LoginForm = ({ handleLogin }) => {
-  const [username, setUsername] = useState('')
-  const [password, setPassword] = useState('')
+const LoginForm = () => {
+  const [authentication, dispatch] = useAuth()
 
-  const loginUser = (e) => {
+  const loginUser = async (e) => {
     e.preventDefault()
+    console.log('Login button clicked')
+    const { username, password } = authentication
+    // const credentials = { username, password }
+    console.log('Authentication state:', authentication)
 
-    const user = { username: username, password: password }
-    handleLogin(user)
+    try {
+      const response = await loginService.login({ username, password })
+      const { user, token } = response
 
-    setUsername('')
-    setPassword('')
+      blogService.setToken(token)
+      dispatch({
+        type: 'LOGIN',
+        username: e.target.username.value,
+        password: e.target.password.value,
+      })
+    } catch (error) {
+      console.error('Login failed:', error)
+    }
   }
+
+  // const handleUsernameChange = (e) => {
+  //   dispatch({ type: 'UPDATE_USERNAME', username: e.target.value })
+  // }
+
+  // const handlePasswordChange = (e) => {
+  //   dispatch({ type: 'UPDATE_PASSWORD', password: e.target.value })
+  // }
 
   return (
     <div>
@@ -23,9 +45,11 @@ const LoginForm = ({ handleLogin }) => {
           <input
             id='username'
             type='text'
-            value={username}
-            name='Username'
-            onChange={(e) => setUsername(e.target.value)}
+            value={authentication.username}
+            name='username'
+            onChange={(e) =>
+              dispatch({ type: 'UPDATE_USERNAME', username: e.target.value })
+            }
           />
         </div>
         <div>
@@ -33,9 +57,11 @@ const LoginForm = ({ handleLogin }) => {
           <input
             id='password'
             type='password'
-            value={password}
-            name='Password'
-            onChange={(e) => setPassword(e.target.value)}
+            value={authentication.password}
+            name='password'
+            onChange={(e) =>
+              dispatch({ type: 'UPDATE_PASSWORD', password: e.target.value })
+            }
           />
         </div>
         <button type='submit'>login</button>

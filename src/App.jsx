@@ -105,9 +105,7 @@ const App = () => {
   //   }
   // }
 
-  const loginForm = () => (
-    <LoginForm handleLogin={handleLogin} user={user} setUser={setUser} />
-  )
+  const loginForm = () => <LoginForm />
 
   const blogForm = () => {
     return (
@@ -127,7 +125,7 @@ const App = () => {
   return (
     <div>
       <Notification />
-      <LoginForm handleLogin={handleLogin} user={user} setUser={setUser} />
+      <LoginForm />
       {/* {!user && loginForm()} */}
       <h2>blogs</h2>
       {/* {user && blogForm()} */}
